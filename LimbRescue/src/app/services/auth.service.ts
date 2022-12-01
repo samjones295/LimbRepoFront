@@ -28,7 +28,7 @@ export class AuthenticationService {
 
   // Method used to call authentication on the backend
   signInWithCognito(username: string, password: string) {
-    return this.http.post<any>(`http://localhost:8443/getcredentials`, {"username": username, "password": password},{ 
+    return this.http.post<any>(`http://localhost:8443/api/auth/signin`, {"username": username, "password": password},{ 
         withCredentials: true}).pipe(map((res) => {
           this.registerSuccessfulLogin(username, password);
         }));
