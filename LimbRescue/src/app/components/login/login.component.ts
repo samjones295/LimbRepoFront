@@ -1,27 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from './auth.service';
+import { AuthenticationService } from 'src/app/services/auth.service';
+
+import { User } from 'src/app/models/user'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.sass']
 })
+
 export class LoginComponent implements OnInit {
 
-  // initialize variables used for login
-  username?: string;
-  password?: string;
-  errorMessage = 'Invalid Credentials';
-  successMessage?: string;
+
+  user: User | undefined;
+  isForgotPassword:boolean = false;
+  isForgotPasswordEmail:boolean = false;
+  newPassword:string = '';
+  login_subscription: any;
   invalidLogin = false;
   loginSuccess = false;
-  login_subscription: any;
+  errorMessage = '';
+  successMessage?: string;
 
   constructor(private router: Router, private authenticationService: AuthenticationService) {   }
 
   // Called when page is loaded, dont need to do anything here
-  ngOnInit() {}
+  ngOnInit() {
+    this.user = {} as User
+  }
 
   // Called  when the page  is left
   ngOnDestroy(){
@@ -34,7 +41,8 @@ export class LoginComponent implements OnInit {
   // Called when the login button is pressed
   handleLogin() {
     // Try to do the login
-    this.login_subscription = this.authenticationService.authenticationService(this.username!, this.password!).subscribe((result)=> {
+    if(this.user && this.user.email && this.user.password){
+    this.login_subscription = this.authenticationService.signInWithCognito(this.user.email, this.user.password).subscribe((res)=> {
       // If successful set thevariables
       this.invalidLogin = false;
       this.loginSuccess = true;
@@ -47,5 +55,8 @@ export class LoginComponent implements OnInit {
       this.invalidLogin = true;
       this.loginSuccess = false;
     });      
+    }else{
+      this.errorMessage = 'Please enter a valid email or password';
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from './components/login/auth.service';
+import { AuthenticationService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
+
+
 export class AppComponent implements OnInit {
   title = 'LimbRescue';
   isLoggedIn$!: Observable<boolean>;

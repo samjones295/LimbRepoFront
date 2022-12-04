@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, ViewChild, Inject } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { GroupReading } from 'src/app/models/group-reading.model';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
+import { PageSizeInfo } from 'src/app/models/page-size-info.model';
+import { PageSizeInfoService } from 'src/app/page-size-info.service';
 
 // Use these date formats for the Date Created section of the home table
 export const MY_DATE_FORMATS = {
@@ -42,6 +44,7 @@ export class HomeComponent implements AfterViewInit {
   time_left!: number;
   time_passed!: number;
   value!: number;
+  public pageSize = 10;
 
   // Definition for subscriptions
   readings_sub: any;
@@ -61,18 +64,21 @@ export class HomeComponent implements AfterViewInit {
   selection_subject = new SelectionModel<Reading>(true, []);
 
   //Define home table components
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  //@ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatTable) matTable!: MatTable<Reading>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
 
-  constructor(private router: Router, private readingService: ReadingService, private groupService: GroupService, private groupReadingService: GroupReadingService, public dialog: MatDialog) {}
+  constructor(private router: Router, private readingService: ReadingService, private groupService: GroupService, private groupReadingService: GroupReadingService, public dialog: MatDialog, private pageSizeInfo: PageSizeInfoService) {}
 
   // Ran when the page is initialized
   ngOnInit() {
     // set the data source to thetable components
+    this.paginator.pageSize = this.pageSizeInfo.getPageSizeInfo();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    console.log(this.paginator.pageSize);
 
     // Set up the sort
     const sortState: Sort = {active: 'id', direction: 'desc'};
@@ -122,6 +128,8 @@ export class HomeComponent implements AfterViewInit {
     if(this.post_sub != undefined){
       this.post_sub.unsubscribe()
     }
+    this.pageSize = this.paginator.pageSize;
+    this.dataSource.paginator = this.paginator;
   }
 
   // Used to open the dialog to update a reading
@@ -313,6 +321,14 @@ export class HomeComponent implements AfterViewInit {
     arr.forEach(item => reading_ids+=item.id+',')
     reading_ids = reading_ids.substring(0,reading_ids.length - 1)
     return reading_ids
+  }
+
+  onPaginateChange(event?:PageEvent) {
+    this.pageSize = event!.pageSize;
+    this.pageSizeInfo.setPageSizeInfo(this.pageSize);
+    console.log(this.pageSizeInfo.getPageSizeInfo());
+    this.paginator.pageSize = event!.pageSize;
+    console.log(this.paginator.pageSize);
   }
 }
 

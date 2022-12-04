@@ -94,7 +94,7 @@
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of readings"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of readings" (page)="onPaginateChange($event)"></mat-paginator>
     </div>
     <div class="table-style" style="top:50px;">
         <table style="table-layout: fixed;">
