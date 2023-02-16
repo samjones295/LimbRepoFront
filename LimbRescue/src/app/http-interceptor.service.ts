@@ -14,6 +14,7 @@ export class HttpInterceptorService implements HttpInterceptor {
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': 'http://localhost:8081',
+                    'Access-Control-Allow-Credentials': 'true',
                     'test':'test'
                       
                 }),
