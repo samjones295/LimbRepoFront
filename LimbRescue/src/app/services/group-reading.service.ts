@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { GroupReading } from '../models/group-reading.model';
 import { Constants } from '../global/Constants';
 
-const baseUrl = Constants.IP;
+const baseUrl = Constants.IP+"/api";;
 
 @Injectable({
   providedIn: 'root'

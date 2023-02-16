@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reading } from '../models/reading.model';
 import { Constants } from '../global/Constants';
 
-const baseUrl = Constants.IP;
+const baseUrl = Constants.IP+"/api";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,9 @@ export class ReadingService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Reading[]> {
+    
     return this.http.get<Reading[]>(baseUrl+'/readings');
+    
   }
 
   getAllOfPatient(patient_num: string): Observable<Reading[]> {

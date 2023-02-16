@@ -12,7 +12,10 @@ export class HttpInterceptorService implements HttpInterceptor {
         if (this.authenticationService.isUserLoggedIn()) {
             const authReq = req.clone({
                 headers: new HttpHeaders({
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:8081',
+                    'test':'test'
+                      
                 }),
                 withCredentials: true
             });

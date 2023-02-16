@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CsvData, CsvMetaData } from '../models/csv-data.model';
 import { Constants } from 'src/app/global/Constants';
 
-const baseUrl = Constants.IP;
+const baseUrl = Constants.IP+"/api";;
 
 @Injectable({
   providedIn: 'root'
