@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Reading } from '../models/reading.model';
 import { Constants } from '../global/Constants';
 
-const baseUrl = Constants.IP+"/api";
+const baseUrl = Constants.IP;
 
 @Injectable({
   providedIn: 'root'
